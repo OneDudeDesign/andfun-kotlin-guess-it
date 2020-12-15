@@ -16,7 +16,20 @@
 
 package com.example.android.guesstheword.screens.score
 
-// TODO (02) Copy over ScoreViewModelFactory - have it also take in a constructor parameter called
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+
+// (02) Copy over ScoreViewModelFactory - have it also take in a constructor parameter called
 // finalScore
-// TODO (03) In the overridden create method, construct an instance of ScoreViewModel,
+
+class ScoreViewModelFactory(private val finalScore: Int) : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(ScoreViewModel::class.java)) {
+            //Construct and return the ScoreViewModel
+            return ScoreViewModel(finalScore) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+// (03) In the overridden create method, construct an instance of ScoreViewModel,
 // passing in finalScore

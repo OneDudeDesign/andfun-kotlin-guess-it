@@ -48,11 +48,12 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
 
-        <!-- TODO (01) For score_text and word_text use the LiveData from GameViewModel to set the
+        <!-- (01) For score_text and word_text use the LiveData from GameViewModel to set the
         text attribute -->
 
         <TextView
             android:id="@+id/word_text"
+            android:text="@{@string/quote_format(gameViewModel.word)}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
@@ -87,6 +88,7 @@
 
         <TextView
             android:id="@+id/score_text"
+            android:text="@{@string/score_format(gameViewModel.score)}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

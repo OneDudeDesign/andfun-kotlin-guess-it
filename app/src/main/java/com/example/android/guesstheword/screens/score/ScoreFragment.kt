@@ -58,15 +58,16 @@ class ScoreFragment : Fragment() {
                 .get(ScoreViewModel::class.java)
 
         binding.scoreViewModel = viewModel
-        // TODO (05) Call binding.setLifecycleOwner and remove the score observer
+        //(05) Call binding.setLifecycleOwner and remove the score observer
+        binding.lifecycleOwner = this
 
         // Add observer for score
-        viewModel.score.observe(this, Observer { newScore ->
-            binding.scoreText.text = newScore.toString()
-        })
+        //viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
+        //    binding.scoreText.text = newScore.toString()
+        //})
 
         // Navigates back to title when button is pressed
-        viewModel.eventPlayAgain.observe(this, Observer { playAgain ->
+        viewModel.eventPlayAgain.observe(viewLifecycleOwner, Observer { playAgain ->
             if (playAgain) {
                 findNavController().navigate(ScoreFragmentDirections.actionRestart())
                 viewModel.onPlayAgainComplete()

@@ -16,10 +16,14 @@
 
 package com.example.android.guesstheword.screens.game
 
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -38,7 +42,7 @@ class GameFragment : Fragment() {
     private lateinit var binding: GameFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
 
         // Inflate view and obtain an instance of the binding class
         binding = DataBindingUtil.inflate(
@@ -71,11 +75,30 @@ class GameFragment : Fragment() {
 
         // TODO (09) Created an observer for the buzz event which calls the buzz method with the
         // correct pattern. Remember to call onBuzzComplete!
+        viewModel.buzzEvent.observe(viewLifecycleOwner, Observer { typeBuzz ->
+            if (typeBuzz != GameViewModel.BuzzType.NO_BUZZ) {
+                buzz(typeBuzz.pattern)
+                viewModel.onBuzzComplete()
+            }
+        })
 
         return binding.root
 
     }
 
-    // TODO (08) Copy over the buzz method here
+    // (08) Copy over the buzz method here
+    @Suppress("DEPRECATION")
+    private fun buzz(pattern: LongArray) {
+        val buzzer = activity?.getSystemService<Vibrator>()
+
+        buzzer?.let {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                buzzer.vibrate(VibrationEffect.createWaveform(pattern, -1))
+            } else {
+                //deprecated in API 26
+                buzzer.vibrate(pattern, -1)
+            }
+        }
+    }
 
 }
